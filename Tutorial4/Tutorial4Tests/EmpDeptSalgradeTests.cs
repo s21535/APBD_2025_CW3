@@ -36,12 +36,12 @@ public class EmpDeptSalgradeTests
         var emps = Database.GetEmps();
         var depts = Database.GetDepts();
 
-        //List<Emp> result = emps.Where(e => depts.Any(d=>d.DeptNo == e.DeptNo && d.Loc == "CHICAGO")).ToList();
+        List<Emp> result = emps.Where(e => depts.Any(d=>d.DeptNo == e.DeptNo && d.Loc == "CHICAGO")).ToList();
         
-        List<Emp> result = (from e in emps
-            join d in depts on e.DeptNo equals d.DeptNo
-            where d.Loc == "CHICAGO"
-            select e).ToList();
+        // List<Emp> result = (from e in emps
+        //     join d in depts on e.DeptNo equals d.DeptNo
+        //     where d.Loc == "CHICAGO"
+        //     select e).ToList();
         
         Assert.All(result, e => Assert.Equal(30, e.DeptNo));
     }
@@ -98,9 +98,11 @@ public class EmpDeptSalgradeTests
     {
         var emps = Database.GetEmps();
 
-        // var result = null; 
-        //
-        // Assert.All(result, r => Assert.NotNull(r.Comm));
+        var result = emps.Where(e => e.Comm.HasValue)
+            .SelectMany(e => new[] { new {e.EName, e.Comm }})
+            .ToList();
+        
+        Assert.All(result, r => Assert.NotNull(r.Comm));
     }
 
     // 8. Join with Salgrade
