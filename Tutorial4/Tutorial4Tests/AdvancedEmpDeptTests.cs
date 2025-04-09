@@ -9,7 +9,7 @@ public class AdvancedEmpDeptTests
     {
         var emps = Database.GetEmps();
 
-        decimal? maxSalary = null; 
+        decimal? maxSalary = emps.Max(e => e.Sal); 
 
         Assert.Equal(5000, maxSalary);
     }
